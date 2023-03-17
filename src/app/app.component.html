@@ -1,33 +1,40 @@
-<table>
-  <tr><td>
-<a routerLink="" class="btn btn-primary">Home</a>
-  </td>
-    <span *ngIf="check_user()">
-  <td *ngIf="check_user_role().includes('USER')">
-    <a routerLink="/reservations" class="btn btn-primary">Reservations</a>
-  </td>
-  <td *ngIf="check_user_role().includes('ADMIN')">
-    <a routerLink="/shows" class="btn btn-primary">Shows</a>
-  </td>
-  <span *ngIf="check_user_role().includes('SYSTEM_ADMIN')">
-    <td>
-    <a routerLink="/auditoriums" class="btn btn-primary">Auditoriums</a>
-    </td>
-    <td>
-    <a routerLink="/users" class="btn btn-primary">Users</a>
-    </td>
-  </span>
-    </span>
-    <td>
-      <a routerLink="login" *ngIf="!check_user()" class="btn btn-primary">Login</a>
-    </td>
-    <td>
-      <span *ngIf="check_user()">Logged in as: {{get_user_name()}}</span>
-    </td>
-    <td>
-      <button (click)="logout()" *ngIf="check_user()">Logout</button>
-    </td>
-  </tr>
-</table>
-<router-outlet></router-outlet>
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <div class="container">
+    <a class="navbar-brand text-secondary" href="">Home</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarsExample07" aria-controls="navbarsExample07" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
 
+    <div class="collapse navbar-collapse" style="margin-right: 0!important;" id="navbarsExample07">
+      <ul class="navbar-nav justify-content-end w-100" *ngIf="check_user()">
+        <li *ngIf="check_user_role().includes('USER')" class="nav-item"><a routerLink="/reservations" class="nav-link text-secondary">Reservations</a></li>
+        <li *ngIf="check_user_role().includes('ADMIN')" class="nav-item"><a routerLink="/shows" class="nav-link text-secondary">Shows</a></li>
+        <li *ngIf="check_user_role().includes('SYSTEM_ADMIN')" class="nav-item"><a routerLink="/auditoriums" class="nav-link text-secondary">Auditoriums</a></li>
+        <li *ngIf="check_user_role().includes('SYSTEM_ADMIN')" class="nav-item"><a routerLink="/users" class="nav-link text-secondary">Users</a></li>
+        <li *ngIf="check_user_role().includes('SYSTEM_ADMIN')" class="nav-item"><a routerLink="/performance/new" class="nav-link text-secondary">New Performance</a></li>
+        <li class="nav-item">
+          <div class="dropdown me-auto">
+            <img *ngIf="get_user_image()!=null" class="dropbtn" height="35vh" style="border-radius: 50px" [src]="get_user_image()"/>
+            <a *ngIf="get_user_image()==null" class="nav-link important-text dropbtn" style="cursor: pointer">{{get_user_name()}}</a>
+            <div class="dropdown-content bg-dark">
+              <a routerLink="/user/edit" class="nav-link text-secondary">Change Password</a>
+              <input type="file" #fileupload class="file-upload form-control" (change)="load_image($event)"  style="display: none"/>
+              <a (click)="change_image()" class="nav-link text-secondary" style="cursor: pointer">Change Profile Image</a>
+              <a (click)="logout()" class="nav-link text-secondary" style="cursor: pointer">Logout</a>
+            </div>
+          </div>
+        </li>
+      </ul>
+      <ul class="navbar-nav justify-content-end w-100" *ngIf="!check_user()">
+        <li class="nav-item"><a routerLink="login" class="nav-link">Login</a></li>
+      </ul>
+    </div>
+
+  </div>
+</nav>
+<router-outlet></router-outlet>
+<script>
+  $("#fileupload").click(function(){
+    $("#upload-file").click();
+  });
+</script>

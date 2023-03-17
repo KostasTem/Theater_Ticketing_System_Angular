@@ -1,0 +1,33 @@
+<div style="margin: 0 auto;width: 20%" *ngIf="performance">
+  <h1 style="text-align: center;margin-top: 5vh;" class="important-text"><b *ngIf="performance.id==null">New Performance</b><b *ngIf="performance.id!=null">Update Performance</b></h1>
+  <div class="form-group">
+    <label class="text-secondary">Name:</label>
+    <input type="text" class="form-control" style="margin:0 auto;" [(ngModel)]="performance.name" placeholder="Name" />
+  </div>
+
+  <div class="form-group" style="margin-top: 3vh;">
+    <label class="text-secondary">Duration:</label>
+    <input type="number" class="form-control" [(ngModel)]="performance.duration" style="margin:0 auto" placeholder="Duration" />
+  </div>
+
+  <div class="form-group" style="margin-top: 3vh;">
+    <label class="text-secondary">Ticket Price:</label>
+    <input type="number" class="form-control" [(ngModel)]="performance.ticketPrice"  style="margin:0 auto" placeholder="Ticket Price" />
+  </div>
+
+  <div class="form-group" style="margin-top: 3vh;" *ngIf="available_users!=null">
+    <label class="text-secondary">Performance:</label>
+    <select class="form-control" [disabled]="available_users.length==0" style="margin:0 auto"  (change)="change_user($event)">
+      <option [value]="null" selected>None</option>
+      <option *ngFor="let opt of available_users" [value]="opt.email" >{{opt.email}}</option>
+    </select><br>
+  </div>
+
+  <div class="form-group" style="margin-top: 3vh;">
+    <input type="file" class="file-upload form-control" (change)="load_image($event)"  style="margin:0 auto;width: 40vh"/>
+  </div>
+
+  <img *ngIf="performance.image!=null" [src]="performance.image" alt="Poster" height="500px" style="margin: 0 auto;margin-top:3vh!important;display: block;border-radius: 10px">
+
+  <button (click)="save_change()" class="btn btn-secondary bg-dark important-text" style="margin: 0 auto;display: block;margin-bottom: 3vh!important;margin-top: 2vh!important;" >Save</button>
+</div>

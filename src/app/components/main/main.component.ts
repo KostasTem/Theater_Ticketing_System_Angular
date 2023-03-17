@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, SecurityContext} from '@angular/core';
+import {AfterViewInit, Component, SecurityContext, ViewEncapsulation} from '@angular/core';
 import {MatCalendarCellClassFunction} from "@angular/material/datepicker";
 import {Show} from "../../DataClasses/Show";
 import {Router} from "@angular/router";
@@ -56,7 +56,7 @@ export class MainComponent implements AfterViewInit{
   }
 
   select_date(){
-    if(this.selectedPer==null){
+    if(this.selectedPer==null || this.selectedShow!=null){
       const showDay = this.show_list.find(showD => showD.date.getTime() == this.selectedDate.getTime());
       if(showDay!=null){
         this.uniquePerformances = [];
@@ -69,7 +69,7 @@ export class MainComponent implements AfterViewInit{
   }
   select_performance(event){
     this.selectedPer = Number(event.source.value);
-    if(this.selectedDate==null || this.show_list.find(showD => showD.date.getTime()==this.selectedDate.getTime())==null){
+    if(this.selectedDate==null || this.show_list.find(showD => showD.date.getTime()==this.selectedDate.getTime())==null || this.selectedShow!=null){
       this.datesWithShows = [];
       this.show_list.forEach(showDay =>{
         if(showDay.shows.find(show => show.performance.id==this.selectedPer)){
@@ -86,6 +86,7 @@ export class MainComponent implements AfterViewInit{
     const showDay = this.show_list.find(showD => new Date(Date.parse(showD.date.toString())).getTime() == this.selectedDate.getTime());
     if(showDay!=null) {
       this.selectedShow = showDay.shows.find(show => show.performance.id == this.selectedPer);
+      this.selectedShow.dateTime = new Date(Date.parse(this.selectedShow.dateTime.toString()))
     }
   }
 
@@ -98,6 +99,22 @@ export class MainComponent implements AfterViewInit{
     else{
       this.router.navigateByUrl("/reservations/new/"+this.selectedShow.id);
     }
+  }
+
+  clearSelection(){
+    this.selectedShow=null;
+    this.selectedDate=null;
+    this.selectedPer=null;
+    this.datesWithShows = [];
+    this.uniquePerformances = [];
+    this.show_list.forEach(showD=>{
+      this.datesWithShows.push(showD.date.toISOString());
+      showD.shows.forEach(show =>{
+        if(!this.uniquePerformances.find(per => show.performance.id == per.id)){
+          this.uniquePerformances.push(show.performance);
+        }
+      });
+    });
   }
 
   dateClass:MatCalendarCellClassFunction<Date> = (cellDate,view ) => {

@@ -16,6 +16,8 @@ export class ShowDetailComponent implements OnInit{
   @Input() show: Show;
   available_auditoriums: Auditorium[]=null;
   show_date_time:Date = new Date();
+  click:boolean = false;
+  today:Date = new Date();
 
   constructor(private route:ActivatedRoute,private showService:ShowService,private authService:AuthService,private router: Router){}
 
@@ -39,6 +41,10 @@ export class ShowDetailComponent implements OnInit{
   }
 
   update_show(id:number,newShowTime: Date){
+    if(this.show.auditorium==null){
+      alert("You have to select an auditorium.");
+      return;
+    }
     const newShow = new Show(null,newShowTime,null,this.show.auditorium);
     this.showService.updateShow(id, newShow).subscribe(res => {
       if(res.status==200){
@@ -49,6 +55,10 @@ export class ShowDetailComponent implements OnInit{
   }
 
   change_aud(event:Event){
+    if((event.target as HTMLInputElement).value == "None"){
+      this.show.auditorium = null;
+      return;
+    }
     this.show.auditorium = this.available_auditoriums.find(auditorium => auditorium.name == (event.target as HTMLInputElement).value);
   }
 

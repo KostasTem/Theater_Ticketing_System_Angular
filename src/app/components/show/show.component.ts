@@ -13,6 +13,7 @@ export class ShowComponent implements OnInit{
 
   show_list:Show[] = null;
   today = new Date();
+  performance = null;
 
   constructor(private showService:ShowService,private authService:AuthService,private router:Router){}
 
@@ -36,6 +37,7 @@ export class ShowComponent implements OnInit{
     this.showService.getShowsForPerformance(this.authService.performance.id).subscribe(res => {
       if(res.status==200){
         this.show_list = res.body;
+        this.performance = this.show_list.length>0 ? this.show_list.at(0).performance : this.authService.performance;
         this.show_list.forEach(show => {
           show.dateTime = new Date(Date.parse(show.dateTime.toString()));
         });

@@ -1,0 +1,29 @@
+@media all and (min-width: 1000px) {
+  .my-main-container{
+    margin: 0 auto;
+    margin-top:5vh!important;
+    width: 100%;
+    display: flex;
+  }
+  .my-child-container {
+    flex:1;
+  }
+  .my-main-container div:first-child{
+    margin-right:5vh;
+    flex-basis: 33%;
+    flex-grow: 0;
+    flex-shrink: 0;
+  }
+}
+
+@media all and (max-width: 999px) {
+  .my-main-container{
+    margin:0 auto;
+    margin-top: 3vh!important;
+    width: 100%;
+  }
+  .my-child-container{
+    margin:0 auto;
+    margin-bottom: 10vh!important;
+  }
+}

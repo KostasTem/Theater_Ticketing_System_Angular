@@ -1,25 +1,47 @@
-<div>Shows</div>
-<a routerLink="/shows/new">Create Show</a>
-<div *ngIf="show_list!=null">
-  <div>Your performance is: {{show_list.at(0).performance.name}}</div>
-<table>
+<div class="content my-main-container">
+  <div *ngIf="performance" class="my-child-container">
+    <h1 style="margin-bottom: 3vh;" class="important-text"><b>Performance Information</b></h1>
+    <img [src]="performance.image" alt="Performance Poster" height="500px" style="margin: 0 auto;margin-bottom:3vh!important;display: block;border-radius: 10px">
+    <div class="card" style="width: 50vh;margin: 0 auto;">
+      <ul class="list-group list-group-flush">
+        <li class="list-group-item bg-dark" style="text-align: center;" >
+          <span class="text-secondary" style="font-size: 20px">Performance: </span><b style="font-size: 20px" class="important-text">{{performance.name}}</b>
+        </li>
+        <li class="list-group-item bg-dark" style="text-align: center">
+          <span class="text-secondary" style="font-size: 20px">Duration: </span><b style="font-size: 20px" class="important-text">{{performance.duration}} Minutes</b>
+        </li>
+        <li class="list-group-item bg-dark" style="text-align: center">
+          <span class="text-secondary" style="font-size: 20px">Ticket Price: </span><b style="font-size: 20px" class="important-text">{{performance.ticketPrice}} €</b>
+        </li>
+      </ul>
+    </div>
+    <a routerLink="/performance/edit" class="btn btn-secondary bg-dark important-text" style="margin: 0 auto;display: block;margin-top: 3vh!important;width: fit-content">Edit Performance</a>
+  </div>
+<div class="my-child-container" >
+  <h1 style="margin-bottom: 3vh;" class="important-text"><b>Shows</b></h1>
+<table *ngIf="show_list!=null" class="table table-striped custom-table bg-dark">
   <thead>
     <tr>
-      <th>Show ID</th>
-      <th>Show Time</th>
-      <th>Update Show</th>
-      <th>Delete Show</th>
+      <th scope="col">Show ID</th>
+      <th scope="col">Show Time</th>
+      <th scope="col">Auditorium</th>
+      <th scope="col">Update Show</th>
+      <th scope="col">Delete Show</th>
     </tr>
   </thead>
   <tbody>
-<tr *ngFor="let show of show_list">
+<tr *ngFor="let show of show_list" scope="row">
         <td>{{show.id}}</td>
         <td>{{show.dateTime.toString().split("GMT")[0]}}</td>
-        <td><a routerLink="/shows/{{show.id}}" *ngIf="today.getTime()>show.dateTime.getTime() + show.performance.duration*60000">Update Show</a>
+        <td>{{show.auditorium.name}}</td>
+        <td><a routerLink="/shows/{{show.id}}" class="btn btn-secondary bg-dark important-text" *ngIf="today.getTime()<show.dateTime.getTime() - (60*60000)">Update Show</a>
+          <p  *ngIf="today.getTime()>show.dateTime.getTime() - (60*60000)">Show Finished</p>
         </td>
-  <td><button (click)="delete_show(show.id)" [disabled]="today.getTime()>show.dateTime.getTime() + show.performance.duration*60000">Delete Show</button></td>
+        <td><button (click)="delete_show(show.id)" class="btn btn-secondary bg-dark important-text" [disabled]="today.getTime()>show.dateTime.getTime() + show.performance.duration*60000">Delete Show</button></td>
 </tr>
   </tbody>
 </table>
+  <div *ngIf="show_list==null || show_list.length==0" class="important-text" style="margin: 0 auto;margin-top: 3vh!important;">There are no shows listed for your performance</div>
+  <a routerLink="/shows/new" class="btn btn-secondary bg-dark important-text" style="margin: 0 auto;display: block;margin-top: 3vh!important;width: fit-content">Create Show</a>
 </div>
-<div *ngIf="show_list==null || show_list.length==0">There are no shows listed for your performance</div>
+</div>

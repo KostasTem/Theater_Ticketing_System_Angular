@@ -12,6 +12,7 @@ import { UserDetailComponent } from './components/user-detail/user-detail.compon
 import { RegisterComponent } from './components/register/register.component';
 import {LoginComponent} from "./components/login/login.component";
 import {MainComponent} from "./components/main/main.component";
+import {PerformanceDetailComponent} from "./components/performance-detail/performance-detail.component";
 
 
 const routes: Routes = [
@@ -27,6 +28,9 @@ const routes: Routes = [
   {path:'shows/new',component:ShowDetailComponent},
   {path:'auditoriums/new',component:AuditoriumDetailComponent},
   {path:'login',component:LoginComponent},
+  {path:'performance/new',component:PerformanceDetailComponent},
+  {path:'performance/edit',component:PerformanceDetailComponent},
+  {path:'user/edit',component:UserDetailComponent},
   {path:'',component:MainComponent},
 ];
 

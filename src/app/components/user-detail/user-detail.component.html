@@ -1,19 +1,67 @@
-<div *ngIf="user">
-        <label>Name:</label><br>
-        <span>{{user.firstName}} {{user.lastName}}</span><br>
-        <label>Email:</label><br>
-        <span>{{user.email}}</span><br>
-        <label>Age:</label><br>
-        <span>{{user.age}}</span><br>
-        <label>Provider:</label><br>
-        <span>{{user.provider}}</span><br>
-        <label>Is Admin:</label><br>
-        <span>{{user.roles.includes("ADMIN") ? 'Yes' : 'No'}}</span><br>
-        <label>Performance:</label><br>
-    <select [disabled]="available_performances.length==0 && !user.roles.includes('ADMIN')"  (change)="change_per($event)">
-        <option>None</option>
-        <option *ngFor="let opt of available_performances" [value]="opt.name" >{{opt.name}}</option>
-        <option *ngIf="user.roles.includes('ADMIN')" selected>{{user.performance.name}}</option>
+<div style="margin: 0 auto;width: 20%" *ngIf="user && !edit">
+  <h1 style="text-align: center;margin-top: 5vh;" class="important-text"><b>Update User Roles</b></h1>
+  <div class="form-group">
+    <label class="text-secondary">Name:</label>
+    <input type="text" disabled class="form-control" style="margin:0 auto;" value="{{user.firstName}} {{user.lastName}}" placeholder="Name" />
+  </div>
+
+  <div class="form-group" style="margin-top: 3vh;">
+    <label class="text-secondary">Email:</label>
+    <input type="text" class="form-control" disabled value="{{user.email}}"  style="margin:0 auto" placeholder="Email" />
+  </div>
+
+  <div class="form-group" style="margin-top: 3vh;">
+    <label class="text-secondary">Age:</label>
+    <input type="text" class="form-control" disabled value="{{user.age}}"  style="margin:0 auto" placeholder="Age" />
+  </div>
+
+  <div class="form-group" style="margin-top: 3vh;">
+    <label class="text-secondary">Provider:</label>
+    <input type="text" class="form-control" disabled value="{{user.provider}}"  style="margin:0 auto" placeholder="Provider" />
+  </div>
+
+  <div class="form-group" style="margin-top: 3vh;">
+    <label class="text-secondary"  style="margin:0 auto;width: fit-content;text-align: center">Is Admin:</label>
+    <input type="text" class="form-control" disabled value="{{user.roles.includes('ADMIN') ? 'Yes' : 'No'}}"  style="margin:0 auto;" placeholder="Is Admin" />
+  </div>
+
+  <div class="form-group" style="margin-top: 3vh;">
+    <label class="text-secondary">Provider:</label>
+    <input type="text" class="form-control" disabled value="{{user.provider}}"  style="margin:0 auto;" placeholder="Provider" />
+  </div>
+
+  <div class="form-group" style="margin-top: 3vh;">
+    <label class="text-secondary">Performance:</label>
+    <select class="form-control" [disabled]="available_performances.length==0 && !user.roles.includes('ADMIN')" style="margin:0 auto"  (change)="change_per($event)">
+      <option>None</option>
+      <option *ngFor="let opt of available_performances" [value]="opt.name" >{{opt.name}}</option>
+      <option *ngIf="user.roles.includes('ADMIN')" selected>{{user.performance.name}}</option>
     </select><br>
-    <button (click)="save_change()" [disabled]="user.performance==selected_performance" >Save</button>
+  </div>
+    <button (click)="save_change()" [disabled]="user.performance==selected_performance" class="btn btn-secondary bg-dark important-text" style="margin: 0 auto;display: block;margin-bottom: 3vh!important;margin-top: 2vh!important;" >Save</button>
 </div>
+<div style="margin: 0 auto;width: 20%" *ngIf="user && edit">
+  <h1 style="text-align: center;margin-top: 5vh;" class="important-text"><b>Update User Roles</b></h1>
+  <div class="form-group">
+    <label class="text-secondary">Email:</label>
+    <input type="text" disabled class="form-control" style="margin:0 auto;" value="{{user.email}}" placeholder="Email" />
+  </div>
+
+  <div class="form-group" style="margin-top: 3vh;">
+    <label class="text-secondary">Old Password:</label>
+    <input type="password" class="form-control" [(ngModel)]="oldPass" [class]="click ? (oldPass!=null && oldPass.length>0? 'is-valid' : 'is-invalid') : ''" style="margin:0 auto" placeholder="Old Password" />
+  </div>
+
+  <div class="form-group" style="margin-top: 3vh;">
+    <label class="text-secondary">New Password:</label>
+    <input type="password" class="form-control" [(ngModel)]="newPass" [class]="click ? (newPass!=null && newPass.length>0? 'is-valid' : 'is-invalid') : ''" style="margin:0 auto" placeholder="New Password" />
+  </div>
+
+  <div class="form-group" style="margin-top: 3vh;">
+    <label class="text-secondary">Confirm Password:</label>
+    <input type="password" class="form-control" [(ngModel)]="confirm" [class]="click ? (confirm.length>0 && confirm==newPass? 'is-valid' : 'is-invalid') : ''" style="margin:0 auto" placeholder="Confirm Password" />
+  </div>
+
+  <button (click)="save_change()" class="btn btn-secondary bg-dark important-text" style="margin: 0 auto;display: block;margin-bottom: 3vh!important;margin-top: 2vh!important;" >Save</button>
+</div>
+

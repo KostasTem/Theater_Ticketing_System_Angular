@@ -11,6 +11,7 @@ import { AuthService } from 'src/app/services/auth.service';
 })
 export class AuditoriumDetailComponent {
   @Input() auditorium:Auditorium;
+  click:boolean = false;
 
 
   constructor(private auditoriumService:AuditoriumService,private authService:AuthService,private route:ActivatedRoute,private router:Router){}
@@ -33,19 +34,24 @@ export class AuditoriumDetailComponent {
     }
   }
   save_auditorium(){
-    if(this.auditorium.id==null){
-      this.auditoriumService.createAuditorium(this.auditorium).subscribe(res => {
-        if(res.status==200){
-          this.router.navigateByUrl("/auditoriums");
-        }
-      });
+    this.click = true;
+    if(this.auditorium.seatsPerRow>5 && this.auditorium.rows>5 && this.auditorium.name!=null && this.auditorium.name.length > 0) {
+      if (this.auditorium.id == null) {
+        this.auditoriumService.createAuditorium(this.auditorium).subscribe(res => {
+          if (res.status == 200) {
+            this.router.navigateByUrl("/auditoriums");
+          }
+        });
+      } else {
+        this.auditoriumService.updateAuditorium(this.auditorium.id, this.auditorium).subscribe(res => {
+          if (res.status == 200) {
+            this.router.navigateByUrl("/auditoriums");
+          }
+        });
+      }
     }
     else{
-      this.auditoriumService.updateAuditorium(this.auditorium.id,this.auditorium).subscribe(res => {
-        if(res.status==200){
-          this.router.navigateByUrl("/auditoriums");
-        }
-      });
+      alert("You need to fill in all the fields!");
     }
   }
 

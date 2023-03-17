@@ -1,14 +1,14 @@
-<div>
-  <a routerLink="/auditoriums/new">Create Auditorium</a><br>
-  <table>
+<div class="content">
+  <h1 style="margin-bottom: 3vh;" class="important-text"><b>Auditoriums</b></h1>
+  <table class="table table-striped custom-table bg-dark" *ngIf="auditorium_list!=null && auditorium_list.length>0">
     <thead>
     <tr>
-      <th>Auditorium ID</th>
-      <th>Name</th>
-      <th>Rows</th>
-      <th>Seats Per Row</th>
-      <th>Update</th>
-      <th>Delete</th>
+      <th scope="col">Auditorium ID</th>
+      <th scope="col">Name</th>
+      <th scope="col">Rows</th>
+      <th scope="col">Seats Per Row</th>
+      <th scope="col">Update</th>
+      <th scope="col">Delete</th>
     </tr>
     </thead>
     <tbody>
@@ -17,10 +17,11 @@
         <td>{{aud.name}}</td>
         <td>{{aud.rows}}</td>
         <td>{{aud.seatsPerRow}}</td>
-        <td><a routerLink="/auditoriums/{{aud.id}}">Update</a></td>
-       <td><button (click)="delete_auditorium(aud.id)">Delete</button></td>
+        <td><a routerLink="/auditoriums/{{aud.id}}" class="btn btn-secondary bg-dark important-text">Update</a></td>
+       <td><button (click)="delete_auditorium(aud.id)" class="btn btn-secondary bg-dark important-text">Delete</button></td>
     </tr>
     </tbody>
   </table>
-  <div *ngIf="auditorium_list==null || auditorium_list.length==0">There are no auditoriums.</div>
+  <a routerLink="/auditoriums/new" class="btn btn-secondary bg-dark important-text" style="margin: 0 auto;display: block;margin-top: 3vh!important;width: fit-content">Create Auditorium</a>
+  <div *ngIf="auditorium_list==null || auditorium_list.length==0" class="important-text" style="margin: 0 auto;margin-top: 3vh!important;">There are no auditoriums.</div>
 </div>

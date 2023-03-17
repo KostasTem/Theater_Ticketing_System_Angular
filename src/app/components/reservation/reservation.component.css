@@ -1,23 +1,25 @@
 body {
   font-family: "Roboto", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
-  background-color: #3c373e;
   font-weight: 300; }
 
-.content {
-  padding: 7rem 0; }
-
 .custom-table {
-  min-width: 900px; }
+  width:80%;
+  margin: 0 auto;
+  margin-top: 3vh!important;
+  border-radius: 10px
+}
 .custom-table thead tr, .custom-table thead th {
   padding-bottom: 30px;
   border-top: none;
+  text-align: center;
   border-bottom: none !important;
-  color: blue;
-  font-size: 11px;
+  color: #8CEAED;
+  font-size: 14px;
   text-transform: uppercase;
   letter-spacing: .2rem; }
 .custom-table tbody th, .custom-table tbody td {
-  color: blue;
+  color: #D3ECED!important;
+  text-align: center;
   font-weight: 400;
   padding-bottom: 20px;
   padding-top: 20px;
@@ -31,8 +33,12 @@ body {
   -o-transition: .3s all ease;
   transition: .3s all ease; }
 .custom-table tbody tr:hover td, .custom-table tbody tr:focus td {
-  color: red; }
+  color: #8CEAED!important; }
 .custom-table .td-box-wrap {
   padding: 0; }
 .custom-table .box td, .custom-table .box th {
   border: none !important; }
+button:hover{
+  color:#416C6E!important;
+  background-color: #D3ECED!important;
+}

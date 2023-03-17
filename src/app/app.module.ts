@@ -32,6 +32,7 @@ import { LoginComponent } from './components/login/login.component';
 import { MainComponent } from './components/main/main.component';
 import {HttpErrorInterceptor} from "./HttpErrorInterceptor";
 import { NgbCarouselModule } from "@ng-bootstrap/ng-bootstrap";
+import { PerformanceDetailComponent } from './components/performance-detail/performance-detail.component';
 
 
 const CUSTOM_DATE_FORMATS: NgxMatDateFormats = {
@@ -59,7 +60,8 @@ const CUSTOM_DATE_FORMATS: NgxMatDateFormats = {
     UserDetailComponent,
     RegisterComponent,
     LoginComponent,
-    MainComponent
+    MainComponent,
+    PerformanceDetailComponent
   ],
   imports: [
     BrowserModule,

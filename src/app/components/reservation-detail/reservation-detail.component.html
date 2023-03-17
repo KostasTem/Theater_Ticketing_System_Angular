@@ -1,12 +1,40 @@
-<div *ngIf="ticket_list">
-  <table>
-  <tr *ngFor="let sub_arr of ticket_list">
+<div class="my-main-container" >
+  <div *ngIf="show" class="my-child-container">
+    <h1 style="margin-bottom: 3vh;" class="important-text"><b>Show Information</b></h1>
+    <img [src]="show.performance.image" alt="Performance Poster" height="500px" style="margin: 0 auto;margin-bottom:3vh!important;display: block;border-radius: 10px">
+    <div class="card" style="width: 50vh;margin: 0 auto;">
+      <ul class="list-group list-group-flush">
+        <li class="list-group-item bg-dark" style="text-align: center;" >
+          <span class="text-secondary" style="font-size: 20px">Performance: </span><b style="font-size: 20px" class="important-text">{{show.performance.name}}</b>
+        </li>
+        <li class="list-group-item bg-dark" style="text-align: center">
+          <span class="text-secondary" style="font-size: 20px">Time: </span><b style="font-size: 20px" class="important-text">{{show.dateTime.toString().split("GMT")[0]}}</b>
+        </li>
+        <li class="list-group-item bg-dark" style="text-align: center">
+          <span class="text-secondary" style="font-size: 20px">Duration: </span><b style="font-size: 20px" class="important-text">{{show.performance.duration}} Minutes</b>
+        </li>
+        <li class="list-group-item bg-dark text-secondary" style="text-align: center">
+          <span class="text-secondary" style="font-size: 20px">Auditorium: </span><b class="important-text" style="font-size: 20px">{{show.auditorium.name}}</b>
+        </li>
+        <li class="list-group-item bg-dark" style="text-align: center">
+          <span class="text-secondary" style="font-size: 20px">Ticket Price: </span><b style="font-size: 20px" class="important-text">{{show.performance.ticketPrice}} €</b>
+        </li>
+      </ul>
+    </div>
+  </div>
+  <div *ngIf="ticket_list" class="my-child-container" >
+    <h1 style="margin-bottom: 3vh;" class="important-text"><b>Seats</b></h1>
+    <table style="margin:0 auto">
+      <tr *ngFor="let sub_arr of ticket_list">
         <td *ngFor="let ticket of sub_arr">
-            <button *ngIf="ticket.reservation!=null" class="btn" [style.background-color]="ticket.checkedIn ? 'blue':'red'">{{ticket.seat}}</button>
-            <button *ngIf="ticket.reservation==null" class="btn" (click)="select_seat(ticket.seat)" [style.background-color]="selected_tickets.includes(ticket.seat) ? 'green':'grey'">{{ticket.seat}}</button>
+          <button *ngIf="ticket.reservation!=null" class="btn" style="width:50px;height:50px" [style.background-color]="ticket.checkedIn ? '#639FB8':'red'">{{ticket.seat}}</button>
+          <button *ngIf="ticket.reservation==null" class="btn" style="width:50px;height:50px" (click)="select_seat(ticket.seat)" [style.background-color]="selected_tickets.includes(ticket.seat) ? '#5EAD83':'grey'">{{ticket.seat}}</button>
         </td>
-    </tr>
-  </table>
-  <div>Total Cost: {{price}}</div>
-    <button (click)="make_reservation()">Make Reservation</button>
+      </tr>
+    </table>
+    <div style="position:relative;margin-top: 3vh!important;">
+      <h3 class="bg-dark text-secondary" style="margin-left: auto;margin-right: auto;border-radius: 10px;padding:5px;width: fit-content;text-align: center">Total: <span style="font-size: 20px;font-weight: bold" class="important-text">{{price}} €</span></h3>
+      <button (click)="make_reservation()" class="btn btn-secondary bg-dark important-text" style="margin: 0 auto;display: block;margin-bottom: 3vh!important;">Make Reservation</button>
+    </div>
+  </div>
 </div>

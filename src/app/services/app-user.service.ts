@@ -18,6 +18,14 @@ export class AppUserService {
     return null;
   }
 
+  getNonAdmins(): Observable<HttpResponse<AppUser[]>>{
+    if(localStorage.getItem("access_token")!=null && this.authService.user.roles.includes("SYSTEM_ADMIN")){
+      const headers = { 'Authorization': "Bearer " + localStorage.getItem("access_token"),'Content-Type': 'application/json; charset=utf-8' };
+      return this.http.get<AppUser[]>('https://localhost:8443/api/user/nonAdmins',{headers, observe:'response'});
+    }
+    return null;
+  }
+
   getUser(email: string): Observable<HttpResponse<AppUser>>{
     if(localStorage.getItem("access_token")!=null && this.authService.user.roles.includes("SYSTEM_ADMIN")){
       const headers = { 'Authorization': "Bearer " + localStorage.getItem("access_token"),'Content-Type': 'application/json; charset=utf-8' };
@@ -31,6 +39,24 @@ export class AppUserService {
     if(localStorage.getItem("access_token")!=null && this.authService.user.roles.includes("SYSTEM_ADMIN")){
       const headers = { 'Authorization': "Bearer " + localStorage.getItem("access_token"),'Content-Type': 'application/json; charset=utf-8' };
       return this.http.patch<AppUser>('https://localhost:8443/api/user/'+email, JSON.stringify(body),{headers, observe:'response'});
+    }
+    return null;
+  }
+
+  updatePassword(oldPassword:string,newPassword:string):Observable<HttpResponse<string>>{
+    const body = {"oldPass":oldPassword,"newPass": newPassword};
+    if(localStorage.getItem("access_token")!=null){
+      const headers = { 'Authorization': "Bearer " + localStorage.getItem("access_token"),'Content-Type': 'application/json; charset=utf-8' };
+      return this.http.patch<string>('https://localhost:8443/api/user/updatePassword', JSON.stringify(body),{headers, observe:'response'});
+    }
+    return null;
+  }
+
+  updateImage(newImage:string):Observable<HttpResponse<string>>{
+    const body = {"image":newImage}
+    if(localStorage.getItem("access_token")!=null){
+      const headers = { 'Authorization': "Bearer " + localStorage.getItem("access_token"),'Content-Type': 'application/json; charset=utf-8' };
+      return this.http.patch<any>('https://localhost:8443/api/user/updateImage', newImage,{headers, observe:'response'});
     }
     return null;
   }

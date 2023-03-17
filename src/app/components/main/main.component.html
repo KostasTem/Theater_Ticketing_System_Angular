@@ -1,14 +1,17 @@
+<h1 style="text-align: center;margin-top: 3vh;margin-bottom: 3vh;" class="important-text"><b>Theater Tickets</b></h1>
 <ngb-carousel *ngIf="images" [showNavigationArrows]="false" [interval]="8000" >
   <ng-template ngbSlide *ngFor="let perf of randomPerformances">
     <div class="picsum-img-wrapper" style="display: block;margin-left: auto;margin-right: auto;">
-      <img [src]="perf.image" alt="Random first slide" style="display: block;margin-left: auto;margin-right: auto;width: 50%;height:500px;" />
+      <img [src]="perf.image" alt="Random first slide" style="display: block;margin-left: auto;margin-right: auto;width: 66%;height:75vh;border-radius: 10px" />
     </div>
     <div class="carousel-caption">
       <h3>{{perf.name}}</h3>
     </div>
   </ng-template>
 </ngb-carousel>
-<mat-form-field class="example-full-width">
+<div style="margin-top: 5vh;display: flex;justify-content: center;align-items: center;flex-direction: column;">
+  <h1 style="text-align: center;margin-top: 5vh;" class="important-text"><b >Select Show</b></h1>
+<mat-form-field>
   <mat-label>Select Date For Show</mat-label>
   <input matInput [matDatepicker]="picker" [(ngModel)]="selectedDate" (dateChange)="select_date()">
   <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
@@ -22,11 +25,30 @@
     </mat-option>
   </mat-select>
 </mat-form-field>
-<br><br>
-<div *ngIf="selectedShow!=null">
-  <div>Performance: {{selectedShow.performance.name}}</div><br>
-  <div>Time: {{selectedShow.dateTime}}</div>
-  <div>Duration: {{selectedShow.performance.duration}}</div>
-  <div>Ticket Price: {{selectedShow.performance.ticketPrice}}</div>
-  <button (click)="reservation_redirect()">Make Reservation</button>
-</div>
+    <button *ngIf="selectedShow!=null || selectedPer!=null || selectedDate!=null" (click)="clearSelection()" class="btn btn-secondary bg-dark important-text">Clear Selection</button>
+    <div *ngIf="selectedShow!=null">
+      <h1 style="text-align: center;margin-top: 3vh" class="important-text"><b>Show Information</b></h1>
+    <div class="card" style="width: 40rem;margin-top: 3vh;">
+    <ul class="list-group list-group-flush">
+      <li class="list-group-item bg-dark" style="text-align: center;" >
+        <span class="text-secondary" style="font-size: 20px">Performance: </span><b class="important-text" style="font-size: 20px">{{selectedShow.performance.name}}</b>
+      </li>
+      <li class="list-group-item bg-dark text-secondary" style="text-align: center">
+        <span class="text-secondary" style="font-size: 20px">Time: </span><b class="important-text" style="font-size: 20px">{{selectedShow.dateTime.toString().split("GMT")[0]}}</b>
+      </li>
+      <li class="list-group-item bg-dark text-secondary" style="text-align: center">
+        <span class="text-secondary" style="font-size: 20px">Duration: </span><b class="important-text" style="font-size: 20px">{{selectedShow.performance.duration}} Minutes</b>
+      </li>
+      <li class="list-group-item bg-dark text-secondary" style="text-align: center">
+        <span class="text-secondary" style="font-size: 20px">Auditorium: </span><b class="important-text" style="font-size: 20px">{{selectedShow.auditorium.name}}</b>
+      </li>
+      <li class="list-group-item bg-dark text-secondary" style="text-align: center">
+        <span class="text-secondary" style="font-size: 20px">Ticket Price: </span><b class="important-text" style="font-size: 20px">{{selectedShow.performance.ticketPrice}} €</b>
+      </li>
+      <li class="list-group-item bg-dark" style="text-align: center">
+        <button (click)="reservation_redirect()" class="btn btn-secondary bg-dark important-text" >Seat Selection</button>
+      </li>
+    </ul>
+  </div>
+    </div>
+  </div>

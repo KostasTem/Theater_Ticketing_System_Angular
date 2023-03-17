@@ -1,14 +1,19 @@
-<table>
+<div class="content">
+  <h1 style="margin-bottom: 3vh;" class="important-text"><b>Users</b></h1>
+<table class="table table-striped custom-table bg-dark" *ngIf="user_list!=null && user_list.length>0">
+  <thead>
     <tr>
-        <th>Name</th>
-        <th>Email</th>
-        <th>Age</th>
-        <th>Provider</th>
-        <th>Admin</th>
-        <th>Performance</th>
-        <th>Image</th>
-        <th>Edit</th>
+        <th scope="col">Name</th>
+        <th scope="col">Email</th>
+        <th scope="col">Age</th>
+        <th scope="col">Provider</th>
+        <th scope="col">Admin</th>
+        <th scope="col">Performance</th>
+        <th scope="col">Image</th>
+        <th scope="col">Edit</th>
     </tr>
+  </thead>
+  <tbody>
     <tr *ngFor="let user of user_list">
         <td>
             {{user.firstName}} {{user.lastName}}
@@ -28,10 +33,12 @@
         <td>
             {{user.performance!=null ? user.performance.name : ""}}
         </td>
-        <td><img *ngIf="user.image!=null" [src]="user.image" width="50px" height="50px"></td>
+        <td><img *ngIf="user.image!=null" [src]="user.image" width="50px" height="50px" style="border-radius: 10px"></td>
         <td>
-            <a routerLink="/users/{{user.email}}">Edit Roles</a>
+            <a routerLink="/users/{{user.email}}" class="btn btn-secondary bg-dark important-text">Edit Roles</a>
         </td>
     </tr>
+  </tbody>
 </table>
-<div *ngIf="user_list==null || user_list.length==0">There are no register users other than you.</div>
+<div *ngIf="user_list==null || user_list.length==0" class="important-text" style="margin: 0 auto;margin-top: 3vh!important;">There are no register users other than you.</div>
+</div>

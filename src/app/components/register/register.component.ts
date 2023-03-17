@@ -12,6 +12,8 @@ export class RegisterComponent implements OnInit{
   @Input() user:AppUser = new AppUser(null,null,null);
   imageFile;
   confirm:string = "";
+  click:boolean = false;
+  re = /\S+@\S+\.\S+/;
 
   constructor(private authService:AuthService,private router:Router){}
 
@@ -35,18 +37,22 @@ export class RegisterComponent implements OnInit{
   }
 
   register(){
-    if(this.confirm==this.user.password){
-      this.authService.register(this.user).subscribe(res => {
-        if(res.status==200){
-          this.router.navigateByUrl("/");
-        }
-        else{
-          alert(res.headers.get("Error-Message"));
-        }
-      });
+    this.click = true;
+    if (this.user.email != null && this.user.password != null && this.user.firstName != null && this.user.lastName != null && this.user.age != null) {
+    if(this.confirm==this.user.password) {
+        this.authService.register(this.user).subscribe(res => {
+          if (res.status == 200) {
+            this.router.navigateByUrl("/");
+          } else {
+            alert(res.headers.get("Error-Message"));
+          }
+        });
+      } else {
+        alert("Passwords Don't Match");
+      }
     }
-    else{
-      alert("Passwords Don't Match");
+    else {
+      alert("You need to fill in all the required fields!");
     }
   }
 

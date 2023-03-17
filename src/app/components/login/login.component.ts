@@ -32,12 +32,16 @@ export class LoginComponent implements OnInit,AfterViewInit{
       client_id: "",
       callback: (response: any) => this.authService.handleGoogleSignIn(response)
     });
-    google.accounts.id.renderButton(
-      document.getElementById("googleButton"),
-      { theme: 'outline',
-        size: 'large',
-        text: 'Sign In With' }  // customization attributes
-    );
+    //google.accounts.id.renderButton(
+    //  document.getElementById("googleButton")
+      // , { theme: 'outline',
+      //   size: 'large',
+      //   text: 'Sign In With' }  // customization attributes
+    //);
+  }
+
+  googleSignIn(){
+    google.accounts.id.prompt();
   }
 
   login(){
@@ -47,7 +51,12 @@ export class LoginComponent implements OnInit,AfterViewInit{
         this.password = "";
         localStorage.setItem("access_token",response.body.token);
         const dec_data = this.jwtHelper.decodeToken(response.body.token);
-        this.authService.user = new AppUser(dec_data.sub,dec_data.roles.split(" "),new Date(dec_data.exp));
+        const dt = new Date(0);
+        dt.setUTCSeconds(dec_data.exp);
+        this.authService.user = new AppUser(dec_data.sub,dec_data.roles.split(" "),dt);
+        if(response.body.user.image!=null){
+          this.authService.user.image = response.body.user.image;
+        }
         localStorage.setItem("user",JSON.stringify(this.authService.user));
         if(this.authService.user.roles.includes("ADMIN")){
           this.performanceService.getPerformance().subscribe(res =>
@@ -56,6 +65,7 @@ export class LoginComponent implements OnInit,AfterViewInit{
             localStorage.setItem("performance",JSON.stringify(res.body));
           });
         }
+
         this.router.navigateByUrl("/");
       }
     });

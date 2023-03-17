@@ -18,6 +18,16 @@ export class UserDetailComponent implements OnInit{
 
   selected_performance:Performance = null;
 
+  edit:boolean;
+
+  oldPass:string;
+
+  newPass:string;
+
+  confirm:string;
+
+  click:boolean = false;
+
   constructor(private performanceService:PerformanceService,private route:ActivatedRoute,private router:Router,private appUserService:AppUserService,private authService:AuthService){}
 
   ngOnInit(): void {
@@ -25,21 +35,30 @@ export class UserDetailComponent implements OnInit{
       this.router.navigateByUrl("");
       return;
     }
-    const email = this.route.snapshot.paramMap.get('email');
-    if(email!=null || email!=""){
-      this.appUserService.getUser(email).subscribe(res =>
-        {
-          if(res.status==200){
+    if(this.router.url.includes("edit")){
+      this.appUserService.getUser(this.authService.user.email).subscribe(res =>{
+        if(res.status==200){
+          this.user = res.body;
+          this.edit = true;
+        }
+      });
+    }
+    else {
+      const email = this.route.snapshot.paramMap.get('email');
+      if (email != null || email != "") {
+        this.appUserService.getUser(email).subscribe(res => {
+          if (res.status == 200) {
+            this.edit=false;
             this.user = res.body;
-            if(res.body.performance!=null){
-              this.selected_performance=res.body.performance;
+            if (res.body.performance != null) {
+              this.selected_performance = res.body.performance;
             }
             this.get_avaiable_performances();
-          }
-          else{
+          } else {
             this.router.navigateByUrl("/users");
           }
         });
+      }
     }
   }
 
@@ -58,21 +77,35 @@ export class UserDetailComponent implements OnInit{
   }
 
   save_change(){
-    const roles = ["USER"];
-    if(this.selected_performance!=null){
-      roles.push("ADMIN");
-    }
-    else{
-      this.selected_performance = new Performance();
-      this.selected_performance.id = 0;
-    }
-    this.appUserService.updateUser(this.user.email,roles,this.selected_performance.id).subscribe(res =>
-      {
-        if(res.status==200){
+    this.click = true;
+    if(!this.edit) {
+      const roles = ["USER"];
+      if (this.selected_performance != null) {
+        roles.push("ADMIN");
+      } else {
+        this.selected_performance = new Performance();
+        this.selected_performance.id = 0;
+      }
+      this.appUserService.updateUser(this.user.email, roles, this.selected_performance.id).subscribe(res => {
+        if (res.status == 200) {
           alert("Success");
         }
         this.router.navigateByUrl("/users");
       });
+    }
+    else{
+      if(this.newPass==this.confirm && this.newPass!=null && this.newPass.length>0) {
+        this.appUserService.updatePassword(this.oldPass, this.newPass).subscribe(res => {
+          if (res.status == 200) {
+            alert("Success");
+            this.router.navigateByUrl("");
+          }
+        });
+      }
+      else{
+        alert("Passwords don't match")
+      }
+    }
   }
 
 }
