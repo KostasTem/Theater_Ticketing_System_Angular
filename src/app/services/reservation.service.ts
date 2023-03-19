@@ -19,11 +19,12 @@ export class ReservationService {
     return null;
   }
 
-  createReservation(showID: number, seats: string[]): Observable<HttpResponse<Reservation>>{
+  createReservation(showID: number, seats: string[],emails:string[]): Observable<HttpResponse<Reservation>>{
     if(localStorage.getItem("access_token")!=null){
       const body = {
         "showID": showID,
-        "tickets": seats
+        "tickets": seats,
+        "emails": emails
       }
       const headers = { 'Authorization': "Bearer " + localStorage.getItem("access_token"),'Content-Type': 'application/json; charset=utf-8' };
       return this.http.post<Reservation>('https://localhost:8443/api/reservation/', body ,{headers, observe:'response'});

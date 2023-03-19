@@ -1,10 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import { ActivatedRoute, Route, Router } from '@angular/router';
 import { Show } from 'src/app/DataClasses/Show';
 import { Ticket } from 'src/app/DataClasses/Ticket';
 import { AuthService } from 'src/app/services/auth.service';
 import { ReservationService } from 'src/app/services/reservation.service';
 import { TicketService } from 'src/app/services/ticket.service';
+import {ModalDismissReasons, NgbModal} from "@ng-bootstrap/ng-bootstrap";
 
 @Component({
   selector: 'app-reservation-detail',
@@ -21,7 +22,12 @@ export class ReservationDetailComponent implements OnInit{
 
   price:number = 0;
 
-  constructor(private authService:AuthService,private ticketService:TicketService,private reservationService:ReservationService,private router:Router,private route:ActivatedRoute){}
+  emails:string[] = null;
+
+  @ViewChild("myButton") button:ElementRef;
+  modalRef;
+
+  constructor(private authService:AuthService,private ticketService:TicketService,private reservationService:ReservationService,private router:Router,private route:ActivatedRoute,private modalService:NgbModal){}
 
   ngOnInit(): void {
     if(this.authService.user==null){
@@ -75,6 +81,29 @@ export class ReservationDetailComponent implements OnInit{
     this.price = Math.round(this.price * 10) / 10;
   }
 
+  open(content) {
+    this.emails = Array(this.selected_tickets.length-1).fill('');
+    this.modalRef = this.modalService.open(content, {modalDialogClass: 'dark-modal'});
+    this.modalRef.result.then((result) => {
+
+    }, (reason) => {
+      const res = this.getDismissReason(reason);
+      if(res == "ESC" || res == ("bd") || res == 'Cross'){
+        this.make_reservation();
+      }
+    });
+  }
+
+  private getDismissReason(reason: any): string {
+    if (reason === ModalDismissReasons.ESC) {
+      return 'ESC';
+    } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
+      return 'bd';
+    } else {
+      return  reason;
+    }
+  }
+
   chunkArrayInGroups(arr, size) {
     var myArray = [];
     for(var i = 0; i < arr.length; i += size) {
@@ -84,11 +113,25 @@ export class ReservationDetailComponent implements OnInit{
   }
 
   make_reservation(){
-    this.reservationService.createReservation(this.show.id,this.selected_tickets).subscribe(res =>
-      {
-        if(res.status==200){
+    if(this.emails==null && this.selected_tickets.length>1){
+      this.button.nativeElement.click();
+    }
+    else {
+      if(this.modalRef!=null) {
+        this.modalRef.close();
+      }
+      if (this.selected_tickets.length < 1) {
+        alert("You must select at least one ticket to make a reservation.")
+        return;
+      }
+      this.reservationService.createReservation(this.show.id, this.selected_tickets,this.emails).subscribe(res => {
+        if (res.status == 200) {
           this.router.navigateByUrl("/reservations");
         }
       });
+    }
+  }
+  trackByIdx(index: number, obj: any): any {
+    return index;
   }
 }

@@ -1,16 +1,28 @@
-import {AfterViewInit, Component, SecurityContext, ViewEncapsulation} from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  ElementRef,
+  SecurityContext,
+  TemplateRef,
+  ViewChild,
+  ViewEncapsulation
+} from '@angular/core';
 import {MatCalendarCellClassFunction} from "@angular/material/datepicker";
 import {Show} from "../../DataClasses/Show";
 import {Router} from "@angular/router";
 import {ShowService} from "../../services/show.service";
 import {ShowList} from "../../DataClasses/ShowList";
 import {DomSanitizer} from "@angular/platform-browser";
+import {MatButton} from "@angular/material/button";
+import {NgbModal,ModalDismissReasons} from "@ng-bootstrap/ng-bootstrap";
+import {TicketService} from "../../services/ticket.service";
 
 
 @Component({
   selector: 'app-main',
   templateUrl: './main.component.html',
-  styleUrls: ['./main.component.css']
+  styleUrls: ['./main.component.css'],
+  encapsulation: ViewEncapsulation.None
 })
 export class MainComponent implements AfterViewInit{
   selectedDate:Date=null;
@@ -20,10 +32,13 @@ export class MainComponent implements AfterViewInit{
   uniquePerformances = [];
   randomPerformances = [];
   show_list:ShowList[];
-  images = [];
-  tempVal;
+  selectedShowTicketSum:number = null;
+  selectedShowTicketsReserved:number = null;
+  selectedShowTicketsCheckedIn:number = null;
+  @ViewChild("myButton") button:ElementRef;
+  modalRef;
 
-  constructor(private router:Router,private showService:ShowService,private sanitizer:DomSanitizer) {
+  constructor(private router:Router,private showService:ShowService,private modalService:NgbModal,private ticketService:TicketService) {
   }
 
   ngAfterViewInit() {
@@ -33,6 +48,7 @@ export class MainComponent implements AfterViewInit{
       this.router.navigateByUrl("/reservations/new/"+String(showID));
       return;
     }
+    localStorage.removeItem("tempShowID");
     this.showService.getShows().subscribe(res => {
       if(res.status==200){
         this.show_list=res.body;
@@ -48,12 +64,14 @@ export class MainComponent implements AfterViewInit{
           });
         });
         const shuffled = this.uniquePerformances.sort(() => 0.5 - Math.random());
-        this.randomPerformances = shuffled.slice(0, 5);
+        this.randomPerformances = shuffled.slice(0, Math.min(shuffled.length,5));
         this.randomPerformances.at(0).image = "https://images.unsplash.com/photo-1677066684071-3f61f898b9a7?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1965&q=80";
         this.randomPerformances.at(1).image = "https://images.unsplash.com/photo-1677001722073-b6af34fe73e1?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80";
       }
     });
   }
+
+
 
   select_date(){
     if(this.selectedPer==null || this.selectedShow!=null){
@@ -86,11 +104,38 @@ export class MainComponent implements AfterViewInit{
     const showDay = this.show_list.find(showD => new Date(Date.parse(showD.date.toString())).getTime() == this.selectedDate.getTime());
     if(showDay!=null) {
       this.selectedShow = showDay.shows.find(show => show.performance.id == this.selectedPer);
-      this.selectedShow.dateTime = new Date(Date.parse(this.selectedShow.dateTime.toString()))
+      this.selectedShow.dateTime = new Date(Date.parse(this.selectedShow.dateTime.toString()));
+      this.ticketService.getTicketInfo(this.selectedShow.id).subscribe(res => {
+        if(res.status==200){
+          this.selectedShowTicketSum = res.body.ticketsSum;
+          this.selectedShowTicketsReserved = res.body.ticketsReserved;
+          this.selectedShowTicketsCheckedIn = res.body.ticketsCheckedIn;
+        }
+      });
+      this.button.nativeElement.click();
+    }
+  }
+  open(content) {
+    this.modalRef = this.modalService.open(content, {modalDialogClass: 'dark-modal'});
+    this.modalRef.result.then((result) => {
+      this.clearSelection();
+    }, (reason) => {
+      console.log(`Dismissed ${this.getDismissReason(reason)}`);
+    });
+  }
+
+  private getDismissReason(reason: any): string {
+    if (reason === ModalDismissReasons.ESC) {
+      return 'by pressing ESC';
+    } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
+      return 'by clicking on a backdrop';
+    } else {
+      return  `with: ${reason}`;
     }
   }
 
   reservation_redirect(){
+    this.modalRef.close();
     if(localStorage.getItem("access_token")==null){
       alert("You need to sign in before making a reservation");
       localStorage.setItem("tempShowID",String(this.selectedShow.id));

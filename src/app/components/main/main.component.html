@@ -1,5 +1,5 @@
 <h1 style="text-align: center;margin-top: 3vh;margin-bottom: 3vh;" class="important-text"><b>Theater Tickets</b></h1>
-<ngb-carousel *ngIf="images" [showNavigationArrows]="false" [interval]="8000" >
+<ngb-carousel *ngIf="randomPerformances" [showNavigationArrows]="false" [interval]="8000" >
   <ng-template ngbSlide *ngFor="let perf of randomPerformances">
     <div class="picsum-img-wrapper" style="display: block;margin-left: auto;margin-right: auto;">
       <img [src]="perf.image" alt="Random first slide" style="display: block;margin-left: auto;margin-right: auto;width: 66%;height:75vh;border-radius: 10px" />
@@ -25,30 +25,74 @@
     </mat-option>
   </mat-select>
 </mat-form-field>
-    <button *ngIf="selectedShow!=null || selectedPer!=null || selectedDate!=null" (click)="clearSelection()" class="btn btn-secondary bg-dark important-text">Clear Selection</button>
-    <div *ngIf="selectedShow!=null">
-      <h1 style="text-align: center;margin-top: 3vh" class="important-text"><b>Show Information</b></h1>
-    <div class="card" style="width: 40rem;margin-top: 3vh;">
-    <ul class="list-group list-group-flush">
-      <li class="list-group-item bg-dark" style="text-align: center;" >
-        <span class="text-secondary" style="font-size: 20px">Performance: </span><b class="important-text" style="font-size: 20px">{{selectedShow.performance.name}}</b>
-      </li>
-      <li class="list-group-item bg-dark text-secondary" style="text-align: center">
-        <span class="text-secondary" style="font-size: 20px">Time: </span><b class="important-text" style="font-size: 20px">{{selectedShow.dateTime.toString().split("GMT")[0]}}</b>
-      </li>
-      <li class="list-group-item bg-dark text-secondary" style="text-align: center">
-        <span class="text-secondary" style="font-size: 20px">Duration: </span><b class="important-text" style="font-size: 20px">{{selectedShow.performance.duration}} Minutes</b>
-      </li>
-      <li class="list-group-item bg-dark text-secondary" style="text-align: center">
-        <span class="text-secondary" style="font-size: 20px">Auditorium: </span><b class="important-text" style="font-size: 20px">{{selectedShow.auditorium.name}}</b>
-      </li>
-      <li class="list-group-item bg-dark text-secondary" style="text-align: center">
-        <span class="text-secondary" style="font-size: 20px">Ticket Price: </span><b class="important-text" style="font-size: 20px">{{selectedShow.performance.ticketPrice}} €</b>
-      </li>
-      <li class="list-group-item bg-dark" style="text-align: center">
-        <button (click)="reservation_redirect()" class="btn btn-secondary bg-dark important-text" >Seat Selection</button>
-      </li>
-    </ul>
-  </div>
+  <button class="btn btn-outline-primary mb-2 me-2" #myButton (click)="open(mymodal)" style="display: none"></button>
+  <ng-template #mymodal let-modal>
+    <div class="modal-header" >
+      <h3 class="modal-title" id="modal-basic-title"><b class="important-text">Show Information</b></h3>
+      <button type="button" class="close btn btn-secondary important-text" aria-label="Close" (click)="modal.dismiss('Cross click')">
+        <span aria-hidden="true">x</span>
+      </button>
     </div>
-  </div>
+    <div class="modal-body">
+      <div class="card" *ngIf="selectedShow" style="width: fit-content;margin-top: 3vh;">
+        <ul class="list-group list-group-flush">
+          <li class="list-group-item bg-dark" style="text-align: center;" >
+            <span class="text-secondary" style="font-size: 20px">Performance: </span><b class="important-text" style="font-size: 20px">{{selectedShow.performance.name}}</b>
+          </li>
+          <li class="list-group-item bg-dark text-secondary" style="text-align: center">
+            <span class="text-secondary" style="font-size: 20px">Time: </span><b class="important-text" style="font-size: 20px">{{selectedShow.dateTime.toString().split("GMT")[0]}}</b>
+          </li>
+          <li class="list-group-item bg-dark text-secondary" style="text-align: center">
+            <span class="text-secondary" style="font-size: 20px">Duration: </span><b class="important-text" style="font-size: 20px">{{selectedShow.performance.duration}} Minutes</b>
+          </li>
+          <li class="list-group-item bg-dark text-secondary" style="text-align: center">
+            <span class="text-secondary" style="font-size: 20px">Auditorium: </span><b class="important-text" style="font-size: 20px">{{selectedShow.auditorium.name}}</b>
+          </li>
+          <li class="list-group-item bg-dark text-secondary" style="text-align: center">
+            <span class="text-secondary" style="font-size: 20px">Ticket Price: </span><b class="important-text" style="font-size: 20px">{{selectedShow.performance.ticketPrice}} €</b>
+          </li>
+          <li class="list-group-item bg-dark text-secondary" *ngIf="selectedShowTicketSum!=null" style="text-align: center">
+            <span class="text-secondary" style="font-size: 20px">All Seats: </span><b class="important-text" style="font-size: 20px">{{selectedShowTicketSum}}</b>
+          </li>
+          <li class="list-group-item bg-dark text-secondary" *ngIf="selectedShowTicketsReserved!=null" style="text-align: center">
+            <span class="text-secondary" style="font-size: 20px">Reserved Seats: </span><b class="important-text" style="font-size: 20px">{{selectedShowTicketsReserved}}</b>
+          </li>
+          <li class="list-group-item bg-dark text-secondary" *ngIf="selectedShowTicketsReserved!=null" style="text-align: center">
+            <span class="text-secondary" style="font-size: 20px">Checked In Seats: </span><b class="important-text" style="font-size: 20px">{{selectedShowTicketsCheckedIn}}</b>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button (click)="reservation_redirect()" class="btn btn-secondary important-text" style="width: fit-content">Seat Selection</button>
+      <button type="button" #closeModal style="display: none" (click)="modal.close('Save click')"></button>
+    </div>
+  </ng-template>
+</div>
+
+
+<!--<div class="modal-body">-->
+<!--  <div class="card" style="width: 40rem;margin-top: 3vh;">-->
+<!--    <ul class="list-group list-group-flush">-->
+<!--      <li class="list-group-item bg-dark" style="text-align: center;" >-->
+<!--        <span class="text-secondary" style="font-size: 20px">Performance: </span><b class="important-text" style="font-size: 20px">{{selectedShow.performance.name}}</b>-->
+<!--      </li>-->
+<!--      <li class="list-group-item bg-dark text-secondary" style="text-align: center">-->
+<!--        <span class="text-secondary" style="font-size: 20px">Time: </span><b class="important-text" style="font-size: 20px">{{selectedShow.dateTime.toString().split("GMT")[0]}}</b>-->
+<!--      </li>-->
+<!--      <li class="list-group-item bg-dark text-secondary" style="text-align: center">-->
+<!--        <span class="text-secondary" style="font-size: 20px">Duration: </span><b class="important-text" style="font-size: 20px">{{selectedShow.performance.duration}} Minutes</b>-->
+<!--      </li>-->
+<!--      <li class="list-group-item bg-dark text-secondary" style="text-align: center">-->
+<!--        <span class="text-secondary" style="font-size: 20px">Auditorium: </span><b class="important-text" style="font-size: 20px">{{selectedShow.auditorium.name}}</b>-->
+<!--      </li>-->
+<!--      <li class="list-group-item bg-dark text-secondary" style="text-align: center">-->
+<!--        <span class="text-secondary" style="font-size: 20px">Ticket Price: </span><b class="important-text" style="font-size: 20px">{{selectedShow.performance.ticketPrice}} €</b>-->
+<!--      </li>-->
+<!--    </ul>-->
+<!--  </div>-->
+<!--</div>-->
+<!--<div class="modal-footer">-->
+<!--  <button (click)="reservation_redirect()" class="btn btn-secondary bg-dark important-text" style="margin: 0 auto;display: block;margin-top: 3vh!important;width: fit-content">Seat Selection</button>-->
+<!--</div>-->
+<!--</div>-->

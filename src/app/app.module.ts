@@ -31,7 +31,7 @@ import {MaterialModule} from "./MaterialModule";
 import { LoginComponent } from './components/login/login.component';
 import { MainComponent } from './components/main/main.component';
 import {HttpErrorInterceptor} from "./HttpErrorInterceptor";
-import { NgbCarouselModule } from "@ng-bootstrap/ng-bootstrap";
+import {NgbCarouselModule, NgbModalModule} from "@ng-bootstrap/ng-bootstrap";
 import { PerformanceDetailComponent } from './components/performance-detail/performance-detail.component';
 
 
@@ -85,7 +85,8 @@ const CUSTOM_DATE_FORMATS: NgxMatDateFormats = {
     NgxMatNativeDateModule,
     MatNativeDateModule,
     MaterialModule,
-    NgbCarouselModule
+    NgbCarouselModule,
+    NgbModalModule
   ],
   providers: [{
     provide: NgxMatDateAdapter, useClass: MyDateAdapter

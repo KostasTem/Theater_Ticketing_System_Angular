@@ -1,15 +1,18 @@
-<div style="margin: 0 auto;width: 50%" *ngIf="auditorium">
+<div style="margin: 0 auto;width: fit-content" *ngIf="auditorium">
 <h1 style="text-align: center;margin-top: 5vh;" class="important-text"><b>New Auditorium</b></h1>
 <div class="form-group">
-  <input type="text" [disabled]="auditorium.id!=null" [(ngModel)]="auditorium.name" [class]="click ? (auditorium.name !=null && auditorium.name.length>0 ? 'is-valid' : 'is-invalid') : ''"  class="form-control" style="margin:0 auto;width: 40vh" placeholder="Name"/>
+  <label class="text-secondary">Name:</label>
+  <input type="text" [disabled]="auditorium.id!=null" [(ngModel)]="auditorium.name" [class]="click ? (auditorium.name !=null && auditorium.name.length>0 ? 'is-valid' : 'is-invalid') : ''"  class="form-control" style="margin:0 auto" placeholder="Name"/>
 </div>
 
 <div class="form-group" style="margin-top: 3vh;">
-  <input type="number" class="form-control" [class]="click ? (auditorium.rows!=null && auditorium.rows>5 ? 'is-valid' : 'is-invalid') :''" [(ngModel)]="auditorium.rows" style="margin:0 auto;width: 40vh" placeholder="Rows" />
+  <label class="text-secondary">Rows:</label>
+  <input type="number" class="form-control" [class]="click ? (auditorium.rows!=null && auditorium.rows>5 ? 'is-valid' : 'is-invalid') :''" [(ngModel)]="auditorium.rows" style="margin:0 auto" placeholder="Rows" />
 </div>
 
 <div class="form-group" style="margin-top: 3vh;">
-  <input type="number"  class="form-control" [class]="click ? (auditorium.seatsPerRow !=null && auditorium.seatsPerRow>5 ? 'is-valid' : 'is-invalid') : ''" [(ngModel)]="auditorium.seatsPerRow" style="margin:0 auto;width: 40vh" placeholder="Seats Per Row" />
+  <label class="text-secondary">Seats Per Row:</label>
+  <input type="number"  class="form-control" [class]="click ? (auditorium.seatsPerRow !=null && auditorium.seatsPerRow>5 ? 'is-valid' : 'is-invalid') : ''" [(ngModel)]="auditorium.seatsPerRow" style="margin:0 auto" placeholder="Seats Per Row" />
 </div>
 
 <button (click)="save_auditorium()" class="btn btn-secondary bg-dark important-text" style="margin: 0 auto;display: block;margin-bottom: 3vh!important;margin-top: 2vh!important;">Save</button>

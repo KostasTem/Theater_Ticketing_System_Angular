@@ -1,31 +1,38 @@
-<div style="margin: 0 auto;width: 50%" *ngIf="user">
+<div style="margin: 0 auto;width: fit-content" *ngIf="user">
   <h1 style="text-align: center;margin-top: 5vh;" class="important-text"><b>Register</b></h1>
   <div class="form-group">
-    <input type="email" [(ngModel)]="user.email" [class]="click ? (user.email!=null && re.test(user.email) ? 'is-valid' : 'is-invalid') : ''"  class="form-control" style="margin:0 auto;width: 40vh" placeholder="Email" />
+    <label class="text-secondary">Email:</label>
+    <input type="email" [(ngModel)]="user.email" [class]="click ? (user.email!=null && re.test(user.email) ? 'is-valid' : 'is-invalid') : ''"  class="form-control" style="margin:0 auto;" placeholder="Email" />
   </div>
 
   <div class="form-group" style="margin-top: 3vh;">
-    <input type="password" class="form-control" [class]="click ? (user.password!=null && user.password.length>0 ? 'is-valid' : 'is-invalid') :''" [(ngModel)]="user.password" style="margin:0 auto;width: 40vh" placeholder="Password" />
+    <label class="text-secondary">Password:</label>
+    <input type="password" class="form-control" [class]="click ? (user.password!=null && user.password.length>0 ? 'is-valid' : 'is-invalid') :''" [(ngModel)]="user.password" style="margin:0 auto;" placeholder="Password" />
   </div>
 
   <div class="form-group" style="margin-top: 3vh;">
-    <input type="password"  class="form-control" [class]="click ? (confirm.length>0 && confirm==user.password? 'is-valid' : 'is-invalid') : ''" [(ngModel)]="confirm" style="margin:0 auto;width: 40vh" placeholder="Confirm Password" />
+    <label class="text-secondary">Confirm Password:</label>
+    <input type="password"  class="form-control" [class]="click ? (confirm.length>0 && confirm==user.password? 'is-valid' : 'is-invalid') : ''" [(ngModel)]="confirm" style="margin:0 auto;" placeholder="Confirm Password" />
   </div>
 
   <div class="form-group" style="margin-top: 3vh;">
-    <input type="text"  class="form-control" [class]="click ? (user.firstName!=null && user.firstName.length>0 ? 'is-valid' : 'is-invalid') :''" [(ngModel)]="user.firstName" style="margin:0 auto;width: 40vh" placeholder="First Name"/>
+    <label class="text-secondary">First Name:</label>
+    <input type="text"  class="form-control" [class]="click ? (user.firstName!=null && user.firstName.length>0 ? 'is-valid' : 'is-invalid') :''" [(ngModel)]="user.firstName" style="margin:0 auto;" placeholder="First Name"/>
   </div>
 
   <div class="form-group" style="margin-top: 3vh;">
-    <input type="text"  class="form-control" [class]="click ? (user.lastName!=null && user.lastName.length>0 ? 'is-valid' : 'is-invalid') :''" [(ngModel)]="user.lastName" style="margin:0 auto;width: 40vh" placeholder="Last Name"  />
+    <label class="text-secondary">Last Name:</label>
+    <input type="text"  class="form-control" [class]="click ? (user.lastName!=null && user.lastName.length>0 ? 'is-valid' : 'is-invalid') :''" [(ngModel)]="user.lastName" style="margin:0 auto;" placeholder="Last Name"  />
   </div>
 
   <div class="form-group" style="margin-top: 3vh;">
-    <input type="number" class="form-control" [class]="click ? (user.age!=null && user.age>18 && user.age < 99 ? 'is-valid' : 'is-invalid') :''" [(ngModel)]="user.age" style="margin:0 auto;width: 40vh" placeholder="Age" />
+    <label class="text-secondary">Age:</label>
+    <input type="number" class="form-control" [class]="click ? (user.age!=null && user.age>18 && user.age < 99 ? 'is-valid' : 'is-invalid') :''" [(ngModel)]="user.age" style="margin:0 auto;" placeholder="Age" />
   </div>
 
   <div class="form-group" style="margin-top: 3vh;">
-    <input type="file" class="file-upload form-control" (change)="load_image($event)"  style="margin:0 auto;width: 40vh"/>
+    <label class="text-secondary">Image:</label>
+    <input type="file" class="file-upload form-control" (change)="load_image($event)"  style="margin:0 auto"/>
   </div>
 
   <img *ngIf="user.image!=null" [src]="user.image" alt="Poster" height="500px" style="margin: 0 auto;margin-top:3vh!important;display: block;border-radius: 10px">

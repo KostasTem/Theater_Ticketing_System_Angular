@@ -8,7 +8,7 @@ import { Reservation } from '../DataClasses/Reservation';
   providedIn: 'root'
 })
 export class TicketService {
-  
+
   constructor(private http:HttpClient) { }
 
   getTickets(id: number): Observable<HttpResponse<TicketResponse>>{
@@ -22,5 +22,10 @@ export class TicketService {
       return this.http.get<Reservation>('https://localhost:8443/api/ticket/checkIn/' + id,{headers, observe:"response"});
     }
     return null;
+  }
+
+  getTicketInfo(id: number): Observable<HttpResponse<any>>{
+    const headers = {'Content-Type': 'application/json; charset=utf-8' };
+    return this.http.get<any>('https://localhost:8443/api/ticket/info/' + id,{headers, observe:"response"});
   }
 }

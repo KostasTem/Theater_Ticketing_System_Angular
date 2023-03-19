@@ -1,4 +1,4 @@
-<div style="margin: 0 auto;width: 50%" *ngIf="show">
+<div style="margin: 0 auto;width: fit-content" *ngIf="show">
   <h1 style="text-align: center;margin-top: 5vh;" class="important-text"><b *ngIf="show.id==null">New Show</b><b *ngIf="show.id!=null">Update Show</b></h1>
   <div class="form-group" style="margin-bottom: 3vh">
     <input type="text" disabled [(ngModel)]="show.performance.name" class="form-control" style="margin:0 auto;width: 40vh" placeholder="Name"/>

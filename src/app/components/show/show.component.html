@@ -37,7 +37,7 @@
         <td><a routerLink="/shows/{{show.id}}" class="btn btn-secondary bg-dark important-text" *ngIf="today.getTime()<show.dateTime.getTime() - (60*60000)">Update Show</a>
           <p  *ngIf="today.getTime()>show.dateTime.getTime() - (60*60000)">Show Finished</p>
         </td>
-        <td><button (click)="delete_show(show.id)" class="btn btn-secondary bg-dark important-text" [disabled]="today.getTime()>show.dateTime.getTime() + show.performance.duration*60000">Delete Show</button></td>
+        <td><button (click)="delete_show(show.id)" class="btn btn-secondary bg-dark important-text" [disabled]="today.getTime()>show.dateTime.getTime()">Delete Show</button></td>
 </tr>
   </tbody>
 </table>

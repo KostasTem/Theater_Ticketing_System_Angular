@@ -57,15 +57,13 @@ export class LoginComponent implements OnInit,AfterViewInit{
         if(response.body.user.image!=null){
           this.authService.user.image = response.body.user.image;
         }
-        localStorage.setItem("user",JSON.stringify(this.authService.user));
+        localStorage.setItem("expiration",JSON.stringify(dt));
         if(this.authService.user.roles.includes("ADMIN")){
           this.performanceService.getPerformance().subscribe(res =>
           {
             this.authService.performance = res.body
-            localStorage.setItem("performance",JSON.stringify(res.body));
           });
         }
-
         this.router.navigateByUrl("/");
       }
     });

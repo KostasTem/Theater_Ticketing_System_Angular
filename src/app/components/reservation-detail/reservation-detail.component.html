@@ -38,3 +38,24 @@
     </div>
   </div>
 </div>
+<button class="btn btn-outline-primary mb-2 me-2" #myButton (click)="open(mymodal)" style="display: none"></button>
+<ng-template #mymodal let-modal>
+  <div class="modal-header" >
+    <div style="display: block!important;">
+    <h3 class="modal-title" id="modal-basic-title"><b class="important-text">Enter The Emails You Want This Reservation To Be Sent To</b></h3>
+    <h5 class="text-secondary">Leave Empty If You Don't Want To Send This Reservation To Anyone</h5>
+    </div>
+    <button type="button" class="close btn btn-secondary important-text" aria-label="Close" (click)="modal.dismiss('Cross')">
+      <span aria-hidden="true">x</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div class="form-group" *ngFor="let email of emails;let i = index;trackBy:trackByIdx" style="margin-top: 1vh!important;">
+      <label class="text-secondary">Email {{i+1}}:</label>
+      <input type="email" [(ngModel)]="emails[i]"   class="form-control" style="margin:0 auto;" placeholder="Email" />
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button (click)="make_reservation()" class="btn btn-secondary important-text" style="width: fit-content">Make Reservation</button>
+  </div>
+</ng-template>

@@ -60,8 +60,62 @@ export class ReservationComponent implements OnInit{
   check_in(id:number){
     this.ticketService.checkIn(id).subscribe(res =>{
       if(res.status==200){
+        const rows = {};
+        let rowSeats = [];
+        const temp = res.body.tickets;
+        let a, b, a1, b1, rx=/(\d+)|(\D+)/g, rd=/\d+/;
+        temp.sort(function(as, bs){
+          a= String(as.seat).toLowerCase().match(rx);
+          b= String(bs.seat).toLowerCase().match(rx);
+          while(a.length && b.length){
+            a1= a.shift();
+            b1= b.shift();
+            if(rd.test(a1) || rd.test(b1)){
+              if(!rd.test(a1)) return 1;
+              if(!rd.test(b1)) return -1;
+              if(a1!= b1) return a1-b1;
+            }
+            else if(a1!= b1) return a1> b1? 1: -1;
+          }
+          return a.length- b.length;
+        });
+        const dict = this.groupIt(temp);
+        let instruction = "";
+        for (const [key, value] of Object.entries(dict)) {
+          instruction += "Row " + key.toUpperCase() + " is located " + this.alphabetPosition(key) + " rows from the stage. Your seats in this row are: ";
+          const tempSeats = dict[key].map(seat => seat.match(/\d+/g))
+          instruction += tempSeats.join(", ");
+          instruction += ".\n";
+        }
+        alert(instruction);
         this.get_reservations();
       }
     });
+  }
+  alphabetPosition(text) {
+    var result = "";
+    for (var i = 0; i < text.length; i++) {
+      var code = text.toUpperCase().charCodeAt(i)
+      if (code > 64 && code < 91) result += (code - 64) + " ";
+    }
+
+    return result.slice(0, result.length - 1);
+  }
+
+  groupIt(array){
+    let resultObj = {};
+
+    for (let i =0; i < array.length; i++) {
+      let currentWord = array[i].seat;
+      let firstChar = currentWord[0].toLowerCase();
+      let innerArr = [];
+      if (resultObj[firstChar] === undefined) {
+        innerArr.push(currentWord);
+        resultObj[firstChar] = innerArr
+      }else {
+        resultObj[firstChar].push(currentWord)
+      }
+    }
+    return resultObj
   }
 }

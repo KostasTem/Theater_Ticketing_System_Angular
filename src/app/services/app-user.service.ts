@@ -13,7 +13,15 @@ export class AppUserService {
   getUsers(): Observable<HttpResponse<AppUser[]>>{
     if(localStorage.getItem("access_token")!=null && this.authService.user.roles.includes("SYSTEM_ADMIN")){
       const headers = { 'Authorization': "Bearer " + localStorage.getItem("access_token"),'Content-Type': 'application/json; charset=utf-8' };
-      return this.http.get<AppUser[]>('https://localhost:8443/api/user/',{headers, observe:'response'});
+      return this.http.get<AppUser[]>('https://localhost:8443/api/user/all',{headers, observe:'response'});
+    }
+    return null;
+  }
+
+  getUserUpdate(): Observable<HttpResponse<AppUser>>{
+    if(localStorage.getItem("access_token")!=null){
+      const headers = { 'Authorization': "Bearer " + localStorage.getItem("access_token"),'Content-Type': 'application/json; charset=utf-8' };
+      return this.http.get<AppUser>('https://localhost:8443/api/user/',{headers, observe:'response'});
     }
     return null;
   }

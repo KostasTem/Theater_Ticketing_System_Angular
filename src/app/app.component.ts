@@ -29,11 +29,22 @@ export class AppComponent implements OnInit{
 
   ngOnInit(): void {
       if(localStorage.getItem("access_token")!=null){
-        this.authService.user = JSON.parse(localStorage.getItem("user"));
-        this.authService.user.expiration = new Date(Date.parse(this.authService.user.expiration.toString()));
-        if(localStorage.getItem("performance")!=null){
-          this.authService.performance = JSON.parse(localStorage.getItem("performance"));
-        }
+        this.appUserService.getUserUpdate().subscribe(res => {
+          if(res.status==200){
+            const dt:Date = JSON.parse(localStorage.getItem("expiration"));
+            this.authService.user = res.body;
+            this.authService.user.expiration = new Date(Date.parse(dt.toString()));
+            if(this.authService.user.expiration.getTime()<new Date().getTime()){
+              localStorage.removeItem("access_token");
+              localStorage.removeItem("expiration");
+              //this.router.navigateByUrl("");
+              return;
+            }
+            if(this.authService.user.roles.includes("ADMIN")){
+              this.authService.performance = res.body.performance;
+            }
+          }
+        });
       }
   }
 
