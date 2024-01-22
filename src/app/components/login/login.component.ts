@@ -32,12 +32,13 @@ export class LoginComponent implements OnInit,AfterViewInit{
       client_id: "",
       callback: (response: any) => this.authService.handleGoogleSignIn(response)
     });
-    //google.accounts.id.renderButton(
-    //  document.getElementById("googleButton")
-      // , { theme: 'outline',
-      //   size: 'large',
-      //   text: 'Sign In With' }  // customization attributes
-    //);
+    google.accounts.id.renderButton(
+      document.getElementById("googleButton")
+      , { theme: 'outline',
+        size: 'large',
+        type: 'icon',
+        shape: 'circle'}  // customization attributes
+    );
   }
 
   googleSignIn(){

@@ -73,6 +73,10 @@ export class UserDetailComponent implements OnInit{
   }
 
   change_per(event:Event){
+    if(this.user.performance != null && (event.target as HTMLInputElement).value == this.user.performance.name){
+      this.selected_performance = this.user.performance;
+      return;
+    }
     this.selected_performance = this.available_performances.find(performance => performance.name == (event.target as HTMLInputElement).value);
   }
 

@@ -33,9 +33,9 @@
   <div class="form-group" style="margin-top: 3vh;">
     <label class="text-secondary">Performance:</label>
     <select class="form-control" [disabled]="available_performances.length==0 && !user.roles.includes('ADMIN')" style="margin:0 auto"  (change)="change_per($event)">
-      <option>None</option>
+      <option [value] = "'None'">None</option>
       <option *ngFor="let opt of available_performances" [value]="opt.name" >{{opt.name}}</option>
-      <option *ngIf="user.roles.includes('ADMIN')" selected>{{user.performance.name}}</option>
+      <option *ngIf="user.roles.includes('ADMIN')" [value]="user.performance.name" selected>{{user.performance.name}}</option>
     </select><br>
   </div>
     <button (click)="save_change()" [disabled]="user.performance==selected_performance" class="btn btn-secondary bg-dark important-text" style="margin: 0 auto;display: block;margin-bottom: 3vh!important;margin-top: 2vh!important;" >Save</button>

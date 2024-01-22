@@ -15,6 +15,7 @@ import {ShowList} from "./DataClasses/ShowList";
 import {Router} from "@angular/router";
 import {Show} from "./DataClasses/Show";
 import {AppUserService} from "./services/app-user.service";
+import {read} from "@popperjs/core";
 
 @Component({
   selector: 'app-root',
@@ -37,7 +38,7 @@ export class AppComponent implements OnInit{
             if(this.authService.user.expiration.getTime()<new Date().getTime()){
               localStorage.removeItem("access_token");
               localStorage.removeItem("expiration");
-              //this.router.navigateByUrl("");
+              this.router.navigateByUrl("");
               return;
             }
             if(this.authService.user.roles.includes("ADMIN")){
@@ -82,6 +83,10 @@ export class AppComponent implements OnInit{
     }
   }
   _handleReader(readerEvent){
+    if(readerEvent.target.result!=null && readerEvent.target.result.length>10000000){
+      alert("The selected image is too large. Please select an image smaller than 10MB.")
+      return;
+    }
     this.appUserService.updateImage(readerEvent.target.result).subscribe(res => {
       if(res.status==200){
         this.authService.user.image = readerEvent.target.result;

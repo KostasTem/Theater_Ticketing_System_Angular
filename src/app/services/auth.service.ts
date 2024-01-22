@@ -23,15 +23,25 @@ export class AuthService {
         this.logout();
         localStorage.setItem("access_token", response.body.token);
         const dec_data = this.jwtHelper.decodeToken(response.body.token);
-        this.user = new AppUser(dec_data.sub, dec_data.roles.split(" "), new Date(dec_data.exp));
-        localStorage.setItem("user", JSON.stringify(this.user));
-        if (this.user.roles.includes("ADMIN")) {
-          this.performanceService.getPerformance().subscribe(res => {
-            this.performance = res.body
-            localStorage.setItem("performance", JSON.stringify(res.body));
+        const dt = new Date(0);
+        dt.setUTCSeconds(dec_data.exp);
+        this.user = new AppUser(dec_data.sub,dec_data.roles.split(" "),dt);
+        if(response.body.user.image!=null){
+          this.user.image = response.body.user.image;
+        }
+        localStorage.setItem("expiration",JSON.stringify(dt));
+        if(this.user.roles.includes("ADMIN")){
+          this.performanceService.getPerformance().subscribe(res =>
+          {
+            this.performance = res.body;
           });
         }
-        this.router.navigateByUrl("/");
+        this.router.navigateByUrl("");
+        setTimeout(
+          function (){
+            location.reload();
+          }, 100
+        );
       }
   });
   }

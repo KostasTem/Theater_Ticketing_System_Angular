@@ -16,7 +16,7 @@
   </div>
 
   <div class="form-group" style="margin-top: 3vh;" *ngIf="available_users!=null">
-    <label class="text-secondary">Performance:</label>
+    <label class="text-secondary">Admin:</label>
     <select class="form-control" [disabled]="available_users.length==0" style="margin:0 auto"  (change)="change_user($event)">
       <option [value]="null" selected>None</option>
       <option *ngFor="let opt of available_users" [value]="opt.email" >{{opt.email}}</option>

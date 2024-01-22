@@ -65,8 +65,6 @@ export class MainComponent implements AfterViewInit{
         });
         const shuffled = this.uniquePerformances.sort(() => 0.5 - Math.random());
         this.randomPerformances = shuffled.slice(0, Math.min(shuffled.length,5));
-        this.randomPerformances.at(0).image = "https://images.unsplash.com/photo-1677066684071-3f61f898b9a7?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1965&q=80";
-        this.randomPerformances.at(1).image = "https://images.unsplash.com/photo-1677001722073-b6af34fe73e1?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80";
       }
     });
   }

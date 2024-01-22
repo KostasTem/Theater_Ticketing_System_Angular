@@ -2,10 +2,7 @@
 <ngb-carousel *ngIf="randomPerformances" [showNavigationArrows]="false" [interval]="8000" >
   <ng-template ngbSlide *ngFor="let perf of randomPerformances">
     <div class="picsum-img-wrapper" style="display: block;margin-left: auto;margin-right: auto;">
-      <img [src]="perf.image" alt="Random first slide" style="display: block;margin-left: auto;margin-right: auto;width: 66%;height:75vh;border-radius: 10px" />
-    </div>
-    <div class="carousel-caption">
-      <h3>{{perf.name}}</h3>
+      <img [src]="perf.image" alt="Random first slide" style="display: block;margin-left: auto;margin-right: auto;height:500px;border-radius: 10px" />
     </div>
   </ng-template>
 </ngb-carousel>

@@ -88,8 +88,11 @@ export class ReservationDetailComponent implements OnInit{
 
     }, (reason) => {
       const res = this.getDismissReason(reason);
-      if(res == "ESC" || res == ("bd") || res == 'Cross'){
+      if(res != "ESC" && res != ("bd") && res != 'Cross'){
         this.make_reservation();
+      }
+      else{
+        this.emails = null;
       }
     });
   }
