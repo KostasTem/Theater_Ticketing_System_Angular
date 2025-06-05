@@ -1,6 +1,6 @@
 # Theater Ticketing System Angular
 
-This project is a frontend for a system that provides users the ability to book tickets for theater performances.
+This project is a frontend for a system that provides users the ability to book tickets for theater performances. The backend Spring Boot API can be found [here](https://github.com/KostasTem/Theater_Ticketing_System_API).
 
 To run this project require a Google OAuth2 Client ID to be placed in the login.component.ts file and private and public pem keys to be placed in a folder named ssl at the top level of the project.
 
